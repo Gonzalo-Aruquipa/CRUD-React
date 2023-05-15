@@ -1,23 +1,29 @@
 // import React from "react";
-import { BrowserRouter as Router} from "react-router-dom"
-import {Routes, Route} from "react-router-dom";
-import  {Header} from "./components/Header";
-import { User } from "./components/User";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import { Header } from "./components/Header";
+import { Navigate } from "./components/Navigate";
+import { Client } from "./components/Client";
+import { Product } from "./components/Product";
+import { Pedido } from "./components/Pedido";
 
-export default function App() {
-
+function App() {
   return (
     <>
-     <Router>
-    <Header />
-      <Routes>
-        <Route exact path="/users" element={<User/>}/>
-      </Routes>
-
-     </Router>
-     </>
-    
+      <Router>
+        <Header />
+        <div className="grid contenedor contenido-principal">
+          <Navigate />
+          <main className="caja-contenido col-9">
+            <Routes>
+              <Route exact path="/clientes" element={<Client />} />
+              <Route exact path="/productos" element={<Product />} />
+              <Route exact path="/pedidos" element={<Pedido />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </>
   );
 }
-
- 
+export default App;
