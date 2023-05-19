@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { ClienteCard } from "./ClienteCard";
+import { Link } from "react-router-dom";
 export const Client = () => {
   const [clientes, setClientes] = useState([]);
 
@@ -19,11 +20,11 @@ export const Client = () => {
     <>
       <h2>Clientes</h2>
 
-      <a href="nuevo-cliente.html" className="btn btn-verde nvo-cliente">
+      <Link to={"/create-client"} className="btn btn-verde nvo-cliente">
         {" "}
         <i className="fas fa-plus-circle"></i>
         Nuevo Cliente
-      </a>
+      </Link>
 
       <ul className="listado-clientes">
         {clientes.map((cliente) => (
