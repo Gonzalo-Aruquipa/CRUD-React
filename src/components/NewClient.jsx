@@ -11,10 +11,13 @@ export const NewClient = () => {
     email: "",
     telefono: "",
   });
+  const [error, setError] = useState({});
 
-  let handleInputChange = (e) => {
+  console.log(error)
+
+  let handleChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
-    // setErrors(validate({ ...form, [e.target.name]: e.target.value }));
+    setError(validate({ ...cliente, [e.target.name]: e.target.value }));
   };
   const getClientes = async () => {
     await axios.post(`${URL}/clientes`, cliente);
@@ -33,6 +36,30 @@ export const NewClient = () => {
       telefono: "",
     });
   };
+
+  function validate(cliente) {
+    const error = {};
+    if (!cliente.name) {
+      error.name = "El Nombre no puede ir vacío";
+    } 
+    if (!cliente.lastname) {
+      error.lastname = "El apellido no puede ir vacío";
+    } 
+    if (!cliente.empresa) {
+      error.empresa = "La empresa no puede ir vacío";
+    } 
+    if (!cliente.email) {
+      error.email = "E-mail no puede ir vacío";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(cliente.email)) {
+      error.email = "E-mail Invalido";
+    } 
+    if (!cliente.telefono) {
+      error.telefono = "El telefono no puede ir vacío";
+    } else if (!/^[0-9.]/.test(cliente.telefono)) {
+      error.telefono = "Solo se permiten números";
+    } 
+    return error;
+  }
   return (
     <>
       <h2>Nuevo Cliente</h2>
@@ -46,8 +73,9 @@ export const NewClient = () => {
             type="text"
             placeholder="Nombre Cliente"
             name="name"
-            onChange={(e) => handleInputChange(e)}
+            onChange={(e) => handleChange(e)}
           />
+          {error.name && <p className="danger-p">{error.name}</p>}
         </div>
 
         <div className="campo">
@@ -56,8 +84,9 @@ export const NewClient = () => {
             type="text"
             placeholder="Apellido Cliente"
             name="lastname"
-            onChange={(e) => handleInputChange(e)}
+            onChange={(e) => handleChange(e)}
           />
+          {error.lastname && <p className="danger-p">{error.lastname}</p>}
         </div>
 
         <div className="campo">
@@ -66,8 +95,9 @@ export const NewClient = () => {
             type="text"
             placeholder="Empresa Cliente"
             name="empresa"
-            onChange={(e) => handleInputChange(e)}
+            onChange={(e) => handleChange(e)}
           />
+          {error.empresa && <p className="danger-p">{error.empresa}</p>}
         </div>
 
         <div className="campo">
@@ -76,8 +106,9 @@ export const NewClient = () => {
             type="email"
             placeholder="Email Cliente"
             name="email"
-            onChange={(e) => handleInputChange(e)}
+            onChange={(e) => handleChange(e)}
           />
+          {error.email && <p className="danger-p">{error.email}</p>}
         </div>
 
         <div className="campo">
@@ -86,8 +117,9 @@ export const NewClient = () => {
             type="text"
             placeholder="Teléfono Cliente"
             name="telefono"
-            onChange={(e) => handleInputChange(e)}
+            onChange={(e) => handleChange(e)}
           />
+          {error.telefono && <p className="danger-p">{error.telefono}</p>}
         </div>
 
         <div className="enviar">
@@ -95,6 +127,9 @@ export const NewClient = () => {
             type="submit"
             className="btn btn-azul"
             value="Agregar Cliente"
+            disabled={error.name || error.lastname || error.empresa || error.email || error.telefono 
+              ? true
+              : false}
           />
         </div>
       </form>
