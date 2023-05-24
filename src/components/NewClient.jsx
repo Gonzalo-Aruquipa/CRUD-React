@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 export const NewClient = () => {
   const URL = "http://localhost:3000";
 
@@ -12,21 +13,29 @@ export const NewClient = () => {
     telefono: "",
   });
   const [error, setError] = useState({});
+  const navigate = useNavigate();
 
-  console.log(error)
 
   let handleChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
     setError(validate({ ...cliente, [e.target.name]: e.target.value }));
   };
-  const getClientes = async () => {
-    await axios.post(`${URL}/clientes`, cliente);
+  const postClientes = async () => {
+
+    try {
+      await axios.post(`${URL}/clientes`, cliente);
+      Swal.fire("OK", "El cliente se agregó correctamente", "success");
+      navigate("/clientes")
+      
+    } catch (error) {
+      Swal.fire("Hubo un error", "El usuario ya está registrado", "error");
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getClientes();
-    Swal.fire("OK", "El cliente se agregó correctamente", "success");
+    postClientes();
+    
 
     setCliente({
       name: "",
