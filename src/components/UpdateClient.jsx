@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-export const NewClient = () => {
+import { useNavigate, useParams } from "react-router-dom";
+export const UpdateClient = () => {
   const URL = "http://localhost:3000";
 
   const [cliente, setCliente] = useState({
@@ -14,28 +14,38 @@ export const NewClient = () => {
   });
   const [error, setError] = useState({});
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const getCliente = async () => {
+    const client = await axios.get(`${URL}/clientes/${id}`);
+    setCliente(client.data)
+  };
+
+  useEffect(() => {
+    getCliente();
+  }, [] );
 
 
   let handleChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
     setError(validate({ ...cliente, [e.target.name]: e.target.value }));
   };
-  const postClientes = async () => {
+  const updateCliente = async () => {
 
     try {
-      await axios.post(`${URL}/clientes`, cliente);
-      Swal.fire("OK", "El cliente se agregó correctamente", "success");
+      await axios.put(`${URL}/clientes/${id}`, cliente);
+      Swal.fire("OK", "Los cambios se guardaron correctamente", "success");
       navigate("/clientes")
       
     } catch (error) {
-      Swal.fire("Hubo un error", "El usuario ya está registrado", "error");
+      Swal.fire("Hubo un error", "El email ya está registrado", "error");
       navigate("/clientes")
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    postClientes();
+    updateCliente();
     
 
     setCliente({
@@ -72,7 +82,7 @@ export const NewClient = () => {
   }
   return (
     <>
-      <h2>Nuevo Cliente</h2>
+      <h2>Editar Cliente</h2>
 
       <form id="form" onSubmit={handleSubmit}>
         <legend>Llena todos los campos</legend>
@@ -83,6 +93,7 @@ export const NewClient = () => {
             type="text"
             placeholder="Nombre Cliente"
             name="name"
+            value={cliente.name}
             onChange={(e) => handleChange(e)}
           />
           {error.name && <p className="danger-p">{error.name}</p>}
@@ -94,6 +105,7 @@ export const NewClient = () => {
             type="text"
             placeholder="Apellido Cliente"
             name="lastname"
+            value={cliente.lastname}
             onChange={(e) => handleChange(e)}
           />
           {error.lastname && <p className="danger-p">{error.lastname}</p>}
@@ -105,6 +117,7 @@ export const NewClient = () => {
             type="text"
             placeholder="Empresa Cliente"
             name="empresa"
+            value={cliente.empresa}
             onChange={(e) => handleChange(e)}
           />
           {error.empresa && <p className="danger-p">{error.empresa}</p>}
@@ -116,6 +129,7 @@ export const NewClient = () => {
             type="email"
             placeholder="Email Cliente"
             name="email"
+            value={cliente.email}
             onChange={(e) => handleChange(e)}
           />
           {error.email && <p className="danger-p">{error.email}</p>}
@@ -127,6 +141,7 @@ export const NewClient = () => {
             type="text"
             placeholder="Teléfono Cliente"
             name="telefono"
+            value={cliente.telefono}
             onChange={(e) => handleChange(e)}
           />
           {error.telefono && <p className="danger-p">{error.telefono}</p>}
@@ -136,7 +151,7 @@ export const NewClient = () => {
           <input
             type="submit"
             className="btn btn-azul"
-            value="Agregar Cliente"
+            value="Guardar Cambios"
             disabled={error.name || error.lastname || error.empresa || error.email || error.telefono 
               ? true
               : false}

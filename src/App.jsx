@@ -5,6 +5,7 @@ import { Header } from "./components/Header";
 import { Navigate } from "./components/Navigate";
 import { Client } from "./components/Client";
 import { NewClient } from "./components/NewClient";
+import { UpdateClient } from "./components/UpdateClient";
 import { Product } from "./components/Product";
 import { Pedido } from "./components/Pedido";
 
@@ -19,6 +20,7 @@ function App() {
             <Routes>
               <Route exact path="/clientes" element={<Client />} />
               <Route exact path="/create-client" element={<NewClient />} />
+              <Route exact path="/update-client/:id" element={<UpdateClient />} />
               <Route exact path="/productos" element={<Product />} />
               <Route exact path="/pedidos" element={<Pedido />} />
               <Route exact path="/pedidos" element={<Pedido />} />

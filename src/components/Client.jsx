@@ -28,7 +28,7 @@ export const Client = () => {
 
       <ul className="listado-clientes">
         {clientes.map((cliente) => (
-          <ClienteCard key={cliente._id} name={cliente.name} lastname={cliente.lastname} telefono={cliente.telefono} empresa={cliente.empresa} email={cliente.email}/>
+          <ClienteCard key={cliente._id} id={cliente._id} name={cliente.name} lastname={cliente.lastname} telefono={cliente.telefono} empresa={cliente.empresa} email={cliente.email}/>
         ))}
       </ul>
     </>

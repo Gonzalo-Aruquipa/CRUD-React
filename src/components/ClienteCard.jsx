@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 export const ClienteCard = (cliente) => {
-  const { _id, name, lastname, telefono, email, empresa } = cliente;
+  const { id, name, lastname, telefono, email, empresa } = cliente;
   return (
     <>
-      <li className="cliente" key={_id}>
+      <li className="cliente" key={id}>
         <div className="info-cliente">
           <p className="nombre">
             {name} {lastname}
@@ -12,10 +14,10 @@ export const ClienteCard = (cliente) => {
           <p>Tel: {telefono}</p>
         </div>
         <div className="acciones">
-          <a href="#" className="btn btn-azul">
+          <Link to={`/update-client/${id}`} className="btn btn-azul">
             <i className="fas fa-pen-alt"></i>
             Editar Cliente
-          </a>
+          </Link>
           <button type="button" className="btn btn-rojo btn-eliminar">
             <i className="fas fa-times"></i>
             Eliminar Cliente
