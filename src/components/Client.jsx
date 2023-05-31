@@ -14,7 +14,7 @@ export const Client = () => {
 
   useEffect(() => {
     getClientes();
-  }, []);
+  }, [clientes]);
 
   return (
     <>
