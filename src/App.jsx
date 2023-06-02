@@ -7,6 +7,8 @@ import { Client } from "./components/Client";
 import { NewClient } from "./components/NewClient";
 import { UpdateClient } from "./components/UpdateClient";
 import { Product } from "./components/Product";
+import { NewProduct } from "./components/NewProduct";
+import { UpdateProduct } from "./components/UpdateProduct";
 import { Pedido } from "./components/Pedido";
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
               <Route exact path="/create-client" element={<NewClient />} />
               <Route exact path="/update-client/:id" element={<UpdateClient />} />
               <Route exact path="/productos" element={<Product />} />
+              <Route exact path="/create-product" element={<NewProduct />} />
+              <Route exact path="/update-product/:id" element={<UpdateProduct />} />
               <Route exact path="/pedidos" element={<Pedido />} />
               <Route exact path="/pedidos" element={<Pedido />} />
             </Routes>

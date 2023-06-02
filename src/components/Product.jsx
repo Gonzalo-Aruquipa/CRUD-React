@@ -1,70 +1,44 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ProductCard } from "./ProductCard";
+
 export const Product = () => {
+
+  const [products, setProducts] = useState([])
+
+  const URL = "http://localhost:3000";
+
+
+  const getProducts = async ()=>{
+    const response = await axios.get(`${URL}/products`);
+    setProducts(response.data)
+  }
+
+  useEffect(() => {
+    return () => {
+      getProducts();
+    };
+  }, [])
   return (
     <>
       <h2>Productos</h2>
 
-      <a href="nuevo-producto.html" className="btn btn-verde nvo-cliente">
+      <Link to={"/create-product"} className="btn btn-verde nvo-cliente">
         {" "}
         <i className="fas fa-plus-circle"></i>
         Nuevo Producto
-      </a>
+      </Link>
 
-      <ul className="listado-productos">
-        <li className="producto">
-          <div className="info-producto">
-            <p className="nombre">VueJS</p>
-            <p className="precio">$25.00 </p>
-            {/* <img src="img/1.jpg"> */}
-          </div>
-          <div className="acciones">
-            <a href="#" className="btn btn-azul">
-              <i className="fas fa-pen-alt"></i>
-              Editar Producto
-            </a>
+      {
+        products.map(product => (
 
-            <button type="button" className="btn btn-rojo btn-eliminar">
-              <i className="fas fa-times"></i>
-              Eliminar Cliente
-            </button>
-          </div>
-        </li>
-        <li className="producto">
-          <div className="info-producto">
-            <p className="nombre">AngularJS</p>
-            <p className="precio">$25.00 </p>
-            {/* <img src="img/2.jpg"> */}
-          </div>
-          <div className="acciones">
-            <a href="#" className="btn btn-azul">
-              <i className="fas fa-pen-alt"></i>
-              Editar Producto
-            </a>
+          <ProductCard key={product._id}  id={product._id} image={product.image} name={product.name} price={product.name}/>
 
-            <button type="button" className="btn btn-rojo btn-eliminar">
-              <i className="fas fa-times"></i>
-              Eliminar Producto
-            </button>
-          </div>
-        </li>
-        <li className="producto">
-          <div className="info-producto">
-            <p className="nombre">ReactJS</p>
-            <p className="precio">$25.00 </p>
-            {/* <img src="img/3.jpg"> */}
-          </div>
-          <div className="acciones">
-            <a href="#" className="btn btn-azul">
-              <i className="fas fa-pen-alt"></i>
-              Editar Producto
-            </a>
+        ))
+      }
 
-            <button type="button" className="btn btn-rojo btn-eliminar">
-              <i className="fas fa-times"></i>
-              Eliminar Producto
-            </button>
-          </div>
-        </li>
-      </ul>
+      
     </>
   );
 };
