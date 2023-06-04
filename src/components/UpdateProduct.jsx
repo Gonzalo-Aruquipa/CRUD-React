@@ -1,4 +1,24 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 export const UpdateProduct = () => {
+  const URL = "http://localhost:3000";
+
+  const [product, setProduct] = useState([]);
+
+  console.log(product)
+
+  const { id } = useParams();
+
+  const getProduct = async () => {
+    const product = await axios.get(`${URL}/products/${id}`);
+    setProduct(product.data)
+  };
+
+  useEffect(() => {
+    getProduct();
+  }, [] );
   return (
     <>
       <h2>Editar Producto</h2>

@@ -19,7 +19,7 @@ export const ClienteCard = (cliente) => {
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${URL}/clientes/${id}`, cliente);
+        axios.delete(`${URL}/clientes/${id}`);
         Swal.fire("Eliminado!", "El Cliente ha sido eliminado.", "success");
       }
     });
