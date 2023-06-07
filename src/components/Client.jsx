@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { ClienteCard } from "./ClienteCard";
 import { Link } from "react-router-dom";
+import { Loading } from "./Loading";
 export const Client = () => {
   const [clientes, setClientes] = useState([]);
 
@@ -14,7 +15,10 @@ export const Client = () => {
 
   useEffect(() => {
     getClientes();
-  }, [clientes]);
+  }, []);
+
+  if(!clientes.length) return <Loading/>
+
 
   return (
     <>

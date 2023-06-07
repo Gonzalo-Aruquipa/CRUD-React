@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const ProductCard = (product) => {
-
-  const {id, image, name, price} = product;
+  const { id, image, name, price } = product;
 
   const URL = "http://localhost:3000";
 
@@ -17,7 +16,7 @@ export const ProductCard = (product) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar!",
-      cancelButtonText: "Cancelar"
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         axios.delete(`${URL}/products/${id}`);
@@ -26,7 +25,6 @@ export const ProductCard = (product) => {
     });
   };
 
-
   return (
     <>
       <ul className="listado-productos">
@@ -34,10 +32,7 @@ export const ProductCard = (product) => {
           <div className="info-producto">
             <p className="nombre">{name}</p>
             <p className="precio">$ {price}</p>
-            {
-              image? (<img src={`http://localhost:3000/${image}`}/>) : null
-            }
-            
+            {image ? <img src={`http://localhost:3000/${image}`} /> : null}
           </div>
           <div className="acciones">
             <Link to={`/update-product/${id}`} className="btn btn-azul">
@@ -45,10 +40,10 @@ export const ProductCard = (product) => {
               Editar Producto
             </Link>
 
-            <button 
-            type="button" 
-            className="btn btn-rojo btn-eliminar"
-            onClick={() => handleDelete(id)}
+            <button
+              type="button"
+              className="btn btn-rojo btn-eliminar"
+              onClick={() => handleDelete(id)}
             >
               <i className="fas fa-times"></i>
               Eliminar Producto

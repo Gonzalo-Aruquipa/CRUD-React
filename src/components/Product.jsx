@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ProductCard } from "./ProductCard";
+import { Loading } from "./Loading";
 
 export const Product = () => {
 
@@ -20,6 +21,8 @@ export const Product = () => {
       getProducts();
     };
   }, [])
+
+  if(!products.length) return <Loading/>
   return (
     <>
       <h2>Productos</h2>
