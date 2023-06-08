@@ -1,30 +1,43 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const NewProduct = () => {
   const URL = "http://localhost:3000";
+  const navigate = useNavigate();
   const [product, setProduct] = useState(
     {
         name: "",
         price: "",
-        image: "",
       }
   );
 
+  const [error, setError] = useState({});
+  const [archivo, setArchivo] = useState("");
+
   let handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
-    // setProduct(validate({ ...cliente, [e.target.name]: e.target.value }));
+    setError(validate({ ...product, [e.target.name]: e.target.value }));
   };
+
+  let handleImage = (e) => {
+    setArchivo(e.target.files[0])
+  }
   const postProduct = async () => {
+
+    const formData = new FormData();
+    formData.append("name", product.name)
+    formData.append("price", product.price)
+    formData.append("image", archivo);
     try {
-      await axios.post(`${URL}/products`, product);
+      await axios.post(`${URL}/products`, formData);
       Swal.fire("OK", "El producto se agregó correctamente", "success");
-      //   navigate("/clientes")
+        navigate("/productos")
     } catch (error) {
         console.log(error)
-      Swal.fire("Hubo un error", "El usuario ya está registrado", "error");
-      //   navigate("/clientes")
+      Swal.fire("Hubo un error", "Vuelva a Intentarlo", "error");
+        navigate("/productos")
     }
   };
 
@@ -35,15 +48,25 @@ export const NewProduct = () => {
     setProduct({
       name: "",
       price: "",
-      image: "",
     });
   };
+
+  function validate(product) {
+    const error = {};
+    if (!product.name) {
+      error.name = "El Nombre no puede ir vacío";
+    } 
+    if (!product.price) {
+      error.price = "El precio no puede ir vacío";
+    } 
+    return error;
+  }
 
   return (
     <>
       <h2>Nuevo Producto</h2>
 
-      <form action="/productos" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <legend>Llena todos los campos</legend>
 
         <div className="campo">
@@ -54,6 +77,7 @@ export const NewProduct = () => {
             name="name"
             onChange={handleChange}
           />
+          {error.name && <p className="danger-p">{error.name}</p>}
         </div>
 
         <div className="campo">
@@ -62,10 +86,11 @@ export const NewProduct = () => {
             type="number"
             name="price"
             min="0.00"
-            step="0.01"
+            step="1"
             placeholder="Precio"
             onChange={handleChange}
           />
+          {error.price && <p className="danger-p">{error.price}</p>}
         </div>
 
         <div className="campo">
@@ -73,7 +98,7 @@ export const NewProduct = () => {
           <input 
           type="file" 
           name="image"
-          onChange={handleChange}
+          onChange={handleImage}
            />
         </div>
 
@@ -82,6 +107,9 @@ export const NewProduct = () => {
             type="submit"
             className="btn btn-azul"
             value="Agregar Producto"
+            disabled={error.name || error.price 
+              ? true
+              : false}
           />
         </div>
       </form>

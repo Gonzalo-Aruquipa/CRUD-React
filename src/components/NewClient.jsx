@@ -15,28 +15,24 @@ export const NewClient = () => {
   const [error, setError] = useState({});
   const navigate = useNavigate();
 
-
   let handleChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
     setError(validate({ ...cliente, [e.target.name]: e.target.value }));
   };
   const postClientes = async () => {
-
     try {
       await axios.post(`${URL}/clientes`, cliente);
       Swal.fire("OK", "El cliente se agregó correctamente", "success");
-      navigate("/clientes")
-      
+      navigate("/clientes");
     } catch (error) {
       Swal.fire("Hubo un error", "El usuario ya está registrado", "error");
-      navigate("/clientes")
+      navigate("/clientes");
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     postClientes();
-    
 
     setCliente({
       name: "",
@@ -51,23 +47,25 @@ export const NewClient = () => {
     const error = {};
     if (!cliente.name) {
       error.name = "El Nombre no puede ir vacío";
-    } 
+    }
     if (!cliente.lastname) {
       error.lastname = "El apellido no puede ir vacío";
-    } 
+    }
     if (!cliente.empresa) {
       error.empresa = "La empresa no puede ir vacío";
-    } 
+    }
     if (!cliente.email) {
       error.email = "E-mail no puede ir vacío";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(cliente.email)) {
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(cliente.email)
+    ) {
       error.email = "E-mail Invalido";
-    } 
+    }
     if (!cliente.telefono) {
       error.telefono = "El telefono no puede ir vacío";
     } else if (!/^[0-9.]/.test(cliente.telefono)) {
       error.telefono = "Solo se permiten números";
-    } 
+    }
     return error;
   }
   return (
@@ -137,9 +135,15 @@ export const NewClient = () => {
             type="submit"
             className="btn btn-azul"
             value="Agregar Cliente"
-            disabled={error.name || error.lastname || error.empresa || error.email || error.telefono 
-              ? true
-              : false}
+            disabled={
+              error.name ||
+              error.lastname ||
+              error.empresa ||
+              error.email ||
+              error.telefono
+                ? true
+                : false
+            }
           />
         </div>
       </form>
