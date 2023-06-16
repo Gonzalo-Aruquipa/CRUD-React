@@ -6,20 +6,23 @@ import Swal from "sweetalert2";
 export const UpdateProduct = () => {
   const URL = "http://localhost:3000";
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    image: "",
+  });
   const navigate = useNavigate();
-
 
   const { id } = useParams();
 
   const getProduct = async () => {
     const product = await axios.get(`${URL}/products/${id}`);
-    setProduct(product.data)
+    setProduct(product.data);
   };
 
   useEffect(() => {
     getProduct();
-  }, [] );
+  }, []);
 
   const [error, setError] = useState({});
   const [archivo, setArchivo] = useState("");
@@ -30,24 +33,22 @@ export const UpdateProduct = () => {
   };
 
   let handleImage = (e) => {
-    setArchivo(e.target.files[0])
-  }
-
+    setArchivo(e.target.files[0]);
+  };
 
   const updateProduct = async () => {
-
     const formData = new FormData();
-    formData.append("name", product.name)
-    formData.append("price", product.price)
+    formData.append("name", product.name);
+    formData.append("price", product.price);
     formData.append("image", archivo);
     try {
       await axios.put(`${URL}/products/${id}`, formData);
-      Swal.fire("OK", "El producto se editó correctamente", "success");
-        navigate("/productos")
+      Swal.fire("OK", "Cambios guardados correctamente", "success");
+      navigate("/productos");
     } catch (error) {
-        console.log(error)
+      console.log(error);
       Swal.fire("Hubo un error", "Vuelva a Intentarlo", "error");
-        navigate("/productos")
+      navigate("/productos");
     }
   };
 
@@ -65,10 +66,10 @@ export const UpdateProduct = () => {
     const error = {};
     if (!product.name) {
       error.name = "El Nombre no puede ir vacío";
-    } 
+    }
     if (!product.price) {
       error.price = "El precio no puede ir vacío";
-    } 
+    }
     return error;
   }
   return (
@@ -84,7 +85,7 @@ export const UpdateProduct = () => {
             type="text"
             placeholder="Nombre Producto"
             name="name"
-            value={product.name}
+            defaultValue={product.name}
             onChange={handleChange}
           />
           {error.name && <p className="danger-p">{error.name}</p>}
@@ -98,7 +99,7 @@ export const UpdateProduct = () => {
             min="0.00"
             step="1"
             placeholder="Precio"
-            value={product.price}
+            defaultValue={product.price}
             onChange={handleChange}
           />
           {error.price && <p className="danger-p">{error.price}</p>}
@@ -106,11 +107,10 @@ export const UpdateProduct = () => {
 
         <div className="campo">
           <label>Imagen:</label>
-          <input 
-          type="file" 
-          name="image"
-          onChange={handleImage}
-           />
+          {product.image ? (
+            <img src={`http://localhost:3000/${product.image}`} width={"300"} />
+          ) : null}
+          <input type="file" name="image" onChange={handleImage} />
         </div>
 
         <div className="enviar">
@@ -118,9 +118,7 @@ export const UpdateProduct = () => {
             type="submit"
             className="btn btn-azul"
             value="Guardar Cambios"
-            disabled={error.name || error.price 
-              ? true
-              : false}
+            disabled={error.name || error.price ? true : false}
           />
         </div>
       </form>
