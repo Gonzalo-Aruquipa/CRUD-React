@@ -41,6 +41,11 @@ export const ClienteCard = (cliente) => {
             <i className="fas fa-pen-alt"></i>
             Editar Cliente
           </Link>
+
+          <Link to={`/create-pedido/${id}`} className="btn btn-amarillo">
+            <i className="fas fa-plus"></i>
+            Nuevo Pedido
+          </Link>
           <button
             type="button"
             className="btn btn-rojo btn-eliminar"
