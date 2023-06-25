@@ -2,15 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SearchProduct } from "./SearchProduct";
+import { CountProduct } from "./CountProduct";
 import Swal from "sweetalert2";
 
 export const NewPedido = () => {
   const URL = "http://localhost:3000";
   const [client, setClient] = useState({});
   const [buscar, setBuscar] = useState("");
-  const [products, setProducts]= useState({});
-
-  console.log("el prouct buscaddo", products)
+  const [pedidos, setPedidos] = useState([]);
 
   const { id } = useParams();
 
@@ -23,23 +22,30 @@ export const NewPedido = () => {
     getCliente();
   }, []);
 
-  const buscaProducto = async(e) => {
+  const buscaProducto = async (e) => {
     e.preventDefault();
-    const response = await axios.get(`${URL}/search?name=${buscar}`)
+    const response = await axios.get(`${URL}/search?name=${buscar}`);
 
+    if (response.data[0]) {
+      const pedido = {
+        ...response.data[0],
+        priceintro: 0,
+        cantidad: 0,
+        subtotal: 0,
+      };
 
-    if(response.data[0]){
-      setProducts(response.data)
-    }else{
+      setPedidos([...pedidos, pedido]);
+    } else {
       Swal.fire("No se encontraron resultados", "Vuelva a Intentarlo", "error");
     }
-
-  }
+  };
 
   const leerBus = (e) => {
-    setBuscar(e.target.value)
+    setBuscar(e.target.value);
+  };
 
-  }
+  
+
   return (
     <>
       <h2>Nuevo Pedido</h2>
@@ -51,63 +57,17 @@ export const NewPedido = () => {
         </p>
       </div>
 
-      <SearchProduct 
-      buscaProducto={buscaProducto}
-      leerBus={leerBus}
-      />
+      <SearchProduct buscaProducto={buscaProducto} leerBus={leerBus} />
 
       <ul className="resumen">
-        <li>
-          <div className="texto-producto">
-            <p className="nombre">Macbook Pro</p>
-            <p className="precio">$250</p>
-          </div>
-          <div className="acciones">
-            <div className="contenedor-cantidad">
-              <i className="fas fa-minus"></i>
-              <input type="text" name="cantidad" />
-              <i className="fas fa-plus"></i>
-            </div>
-            <button type="button" className="btn btn-rojo">
-              <i className="fas fa-minus-circle"></i>
-              Eliminar Producto
-            </button>
-          </div>
-        </li>
-        <li>
-          <div className="texto-producto">
-            <p className="nombre">Macbook Pro</p>
-            <p className="precio">$250</p>
-          </div>
-          <div className="acciones">
-            <div className="contenedor-cantidad">
-              <i className="fas fa-minus"></i>
-              <input type="text" name="cantidad" />
-              <i className="fas fa-plus"></i>
-            </div>
-            <button type="button" className="btn btn-rojo">
-              <i className="fas fa-minus-circle"></i>
-              Eliminar Producto
-            </button>
-          </div>
-        </li>
-        <li>
-          <div className="texto-producto">
-            <p className="nombre">Macbook Pro</p>
-            <p className="precio">$250</p>
-          </div>
-          <div className="acciones">
-            <div className="contenedor-cantidad">
-              <i className="fas fa-minus"></i>
-              <input type="text" name="cantidad" />
-              <i className="fas fa-plus"></i>
-            </div>
-            <button type="button" className="btn btn-rojo">
-              <i className="fas fa-minus-circle"></i>
-              Eliminar Producto
-            </button>
-          </div>
-        </li>
+        {pedidos.map((product) => (
+          <CountProduct
+            key={product._id}
+            product={product}
+            pedidos={pedidos}
+            setPedidos={setPedidos}
+          />
+        ))}
       </ul>
       <div className="campo">
         <label>Total:</label>

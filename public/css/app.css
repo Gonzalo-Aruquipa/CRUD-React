@@ -456,6 +456,23 @@ h3.resumen-titulo {
     color: red;
     font-size: 10px;
   }
+  .btn-eli{
+    color: #e1e1e1;
+  }
+
+  /* inputs */
+.contenedor-cantidad-in{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.lg-3 {
+    size: 1px;
+    width : 150px; 
+    margin: 1;
+
+  }
 /* loading */
 .sk-cube-grid {
     width: 40px;
@@ -466,7 +483,7 @@ h3.resumen-titulo {
   .sk-cube-grid .sk-cube {
     width: 33%;
     height: 33%;
-    background-color: #333;
+    background-color: #00487c;
     float: left;
     -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
             animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
