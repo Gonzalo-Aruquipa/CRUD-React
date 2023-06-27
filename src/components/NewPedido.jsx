@@ -10,6 +10,10 @@ export const NewPedido = () => {
   const [client, setClient] = useState({});
   const [buscar, setBuscar] = useState("");
   const [pedidos, setPedidos] = useState([]);
+  const [total, setTotal] = useState(0);
+  console.log("el total:",total)
+
+  console.log("...>", pedidos )
 
   const { id } = useParams();
 
@@ -20,7 +24,8 @@ export const NewPedido = () => {
 
   useEffect(() => {
     getCliente();
-  }, []);
+    sumaTotal()
+  }, [pedidos]);
 
   const buscaProducto = async (e) => {
     e.preventDefault();
@@ -44,7 +49,16 @@ export const NewPedido = () => {
     setBuscar(e.target.value);
   };
 
-  
+  const sumaTotal = () => {
+
+    if(pedidos.length === 0){
+      setTotal(0);
+      return
+    }
+    let nuevoTotal =0;
+    pedidos.map(pedido => nuevoTotal += pedido.subtotal)
+    setTotal(nuevoTotal);
+  }
 
   return (
     <>
@@ -69,18 +83,20 @@ export const NewPedido = () => {
           />
         ))}
       </ul>
-      <div className="campo">
-        <label>Total:</label>
-        <input
-          type="number"
-          name="precio"
-          placeholder="Precio"
-          readOnly="readonly"
-        />
-      </div>
-      <div className="enviar">
-        <input type="submit" className="btn btn-azul" value="Agregar Pedido" />
-      </div>
+      <p className="total">
+        Total a Pagar: <span>$ {total}</span>
+      </p>
+
+      <form>
+        <div className="enviar">
+          <input
+            type="submit"
+            className="btn btn-verde btn-block"
+            value="Crear Pedido"
+            disabled={total>0? false: true}
+          />
+        </div>
+      </form>
     </>
   );
 };
