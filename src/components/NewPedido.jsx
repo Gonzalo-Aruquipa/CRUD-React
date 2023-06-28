@@ -11,9 +11,6 @@ export const NewPedido = () => {
   const [buscar, setBuscar] = useState("");
   const [pedidos, setPedidos] = useState([]);
   const [total, setTotal] = useState(0);
-  console.log("el total:",total)
-
-  console.log("...>", pedidos )
 
   const { id } = useParams();
 
@@ -24,7 +21,7 @@ export const NewPedido = () => {
 
   useEffect(() => {
     getCliente();
-    sumaTotal()
+    sumaTotal();
   }, [pedidos]);
 
   const buscaProducto = async (e) => {
@@ -50,15 +47,19 @@ export const NewPedido = () => {
   };
 
   const sumaTotal = () => {
-
-    if(pedidos.length === 0){
+    if (pedidos.length === 0) {
       setTotal(0);
-      return
+      return;
     }
-    let nuevoTotal =0;
-    pedidos.map(pedido => nuevoTotal += pedido.subtotal)
+    let nuevoTotal = 0;
+    pedidos.map((pedido) => (nuevoTotal += pedido.subtotal));
     setTotal(nuevoTotal);
-  }
+  };
+
+  const quitarProducto = (id) => {
+    const response = pedidos.filter((pedido) => pedido._id !== id);
+    setPedidos(response);
+  };
 
   return (
     <>
@@ -80,6 +81,7 @@ export const NewPedido = () => {
             product={product}
             pedidos={pedidos}
             setPedidos={setPedidos}
+            quitarProducto={quitarProducto}
           />
         ))}
       </ul>
@@ -93,7 +95,7 @@ export const NewPedido = () => {
             type="submit"
             className="btn btn-verde btn-block"
             value="Crear Pedido"
-            disabled={total>0? false: true}
+            disabled={total > 0 ? false : true}
           />
         </div>
       </form>

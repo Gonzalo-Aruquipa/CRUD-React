@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export const CountProduct = (props) => {
-  const { product, pedidos, setPedidos } = props;
+  const { product, pedidos, setPedidos, quitarProducto } = props;
 
   const [subtotal, setSubtotal] = useState(0);
   const [precio2, setPrecio2] = useState(0);
@@ -72,7 +72,11 @@ export const CountProduct = (props) => {
               value={subtotal}
               disabled
             />
-            <button type="button" className=" btn-eli btn-rojo">
+            <button 
+            type="button" 
+            className=" btn-eli btn-rojo"
+            onClick={()=>quitarProducto(product._id)}
+            >
               <i className="fas fa-minus-circle"></i>
             </button>
           </div>
