@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SearchProduct } from "./SearchProduct";
 import { CountProduct } from "./CountProduct";
 import Swal from "sweetalert2";
@@ -11,6 +11,8 @@ export const NewPedido = () => {
   const [buscar, setBuscar] = useState("");
   const [pedidos, setPedidos] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -61,6 +63,29 @@ export const NewPedido = () => {
     setPedidos(response);
   };
 
+  const handleSubmit = async(e)=> {
+    e.preventDefault();
+
+    const newPedido = {
+      "cliente": id,
+      "pedido": pedidos,
+      "total": total
+    }
+
+    console.log(newPedido)
+
+    try {
+      await axios.post(`${URL}/pedidos`, newPedido)
+      Swal.fire("OK", "El pedido se agregó correctamente", "success");
+        navigate("/pedidos")
+    } catch (error) {
+        console.log(error)
+      Swal.fire("Hubo un error", "Vuelva a Intentarlo", "error");
+        navigate("/pedidos")
+    }
+
+  }
+
   return (
     <>
       <h2>Nuevo Pedido</h2>
@@ -89,7 +114,7 @@ export const NewPedido = () => {
         Total a Pagar: <span>$ {total}</span>
       </p>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="enviar">
           <input
             type="submit"
