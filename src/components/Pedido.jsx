@@ -1,113 +1,38 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { PedidoCard } from "./PedidoCard";
 
 export const Pedido = () => {
+
+  const [pedidos, setPedidos] = useState([]);
+  console.log(pedidos)
+
+  const URL = "http://localhost:3000";
+
+
+  const getPedidos = async ()=>{
+    const response = await axios.get(`${URL}/pedidos`);
+    setPedidos(response.data)
+  }
+
+  useEffect(() => {
+    return () => {
+      getPedidos();
+    };
+  }, [])
   return (
     <>
       <h2>Pedidos</h2>
       
 
       <ul className="listado-pedidos">
-        <li className="pedido">
-          <div className="info-pedido">
-            <p className="id">ID: 0192019201291201</p>
-            <p className="nombre">Cliente: Juan Pablo De la torre</p>
+        {
+          pedidos.map(pedido => (
+            <PedidoCard  key={pedido._id} _id={pedido._id} total={pedido.total} clientes={pedido.cliente} productos={pedido.pedido}/>
 
-            <div className="articulos-pedido">
-              <p className="productos">Artículos Pedido: </p>
-              <ul>
-                <li>
-                  <p>Macbook Pro</p>
-                  <p>Precio: $3000</p>
-                  <p>Cantidad: 4</p>
-                </li>
-                <li>
-                  <p>Macbook Pro</p>
-                  <p>Precio: $3000</p>
-                  <p>Cantidad: 4</p>
-                </li>
-                <li>
-                  <p>Macbook Pro</p>
-                  <p>Precio: $3000</p>
-                  <p>Cantidad: 4</p>
-                </li>
-              </ul>
-            </div>
-            <p className="total">Total: $3,500 </p>
-          </div>
-          <div className="acciones">
-            <a href="#" className="btn btn-azul">
-              <i className="fas fa-pen-alt"></i>
-              Editar Pedido
-            </a>
-
-            <button type="button" className="btn btn-rojo btn-eliminar">
-              <i className="fas fa-times"></i>
-              Eliminar Pedido
-            </button>
-          </div>
-        </li>
-        <li className="pedido">
-          <div className="info-pedido">
-            <p className="id">ID: 0192019201291201</p>
-            <p className="nombre">Cliente: Juan Pablo De la torre</p>
-
-            <div className="articulos-pedido">
-              <p className="productos">Artículos Pedido: </p>
-              <ul>
-                <li>
-                  <p>Macbook Pro</p>
-                  <p>Precio: $3000</p>
-                  <p>Cantidad: 4</p>
-                </li>
-                <li>
-                  <p>Macbook Pro</p>
-                  <p>Precio: $3000</p>
-                  <p>Cantidad: 4</p>
-                </li>
-              </ul>
-            </div>
-            <p className="total">Total: $3,500 </p>
-          </div>
-          <div className="acciones">
-            <a href="#" className="btn btn-azul">
-              <i className="fas fa-pen-alt"></i>
-              Editar Pedido
-            </a>
-
-            <button type="button" className="btn btn-rojo btn-eliminar">
-              <i className="fas fa-times"></i>
-              Eliminar Pedido
-            </button>
-          </div>
-        </li>
-        <li className="pedido">
-          <div className="info-pedido">
-            <p className="id">ID: 0192019201291201</p>
-            <p className="nombre">Cliente: Juan Pablo De la torre</p>
-
-            <div className="articulos-pedido">
-              <p className="productos">Artículos Pedido: </p>
-              <ul>
-                <li>
-                  <p>Macbook Pro</p>
-                  <p>Precio: $3000</p>
-                  <p>Cantidad: 4</p>
-                </li>
-              </ul>
-            </div>
-            <p className="total">Total: $3,500 </p>
-          </div>
-          <div className="acciones">
-            <a href="#" className="btn btn-azul">
-              <i className="fas fa-pen-alt"></i>
-              Editar Pedido
-            </a>
-
-            <button type="button" className="btn btn-rojo btn-eliminar">
-              <i className="fas fa-times"></i>
-              Eliminar Pedido
-            </button>
-          </div>
-        </li>
+          ))
+        }
+        
       </ul>
     </>
   );

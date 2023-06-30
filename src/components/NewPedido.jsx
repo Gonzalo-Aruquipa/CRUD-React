@@ -33,9 +33,10 @@ export const NewPedido = () => {
     if (response.data[0]) {
       const pedido = {
         ...response.data[0],
+        producto: response.data[0]._id,
         priceintro: 0,
-        cantidad: 0,
         subtotal: 0,
+        cantidad: 0,
       };
 
       setPedidos([...pedidos, pedido]);
