@@ -535,3 +535,26 @@ h3.resumen-titulo {
               transform: scale3D(0, 0, 1);
     } 
   }
+
+  .legend {
+    font-size: 2.4rem;
+    color: var(--azul);
+    font-family: var(--fontTexto);
+    font-weight: 700;
+    text-align: center;
+    display: block;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.selectp {
+    padding: 1.5rem;
+    flex: 1;
+    border: 1px solid #e1e1e1;
+}
+.label {
+    font-weight: bold;
+    font-family: var(--fontTexto);
+    flex: 0 0 100px;
+    
+}

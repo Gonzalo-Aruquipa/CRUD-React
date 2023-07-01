@@ -2,7 +2,6 @@ export const PedidoCard = (pedido) => {
 
   const {_id, total, clientes, productos}= pedido;
 
-  console.log("dedsde",pedido)
   return (
     <>
       <li className="pedido">

@@ -1,16 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { SearchProduct } from "./SearchProduct";
+// import { SearchProduct } from "./SearchProduct";
 import { CountProduct } from "./CountProduct";
 import Swal from "sweetalert2";
 
 export const NewPedido = () => {
   const URL = "http://localhost:3000";
   const [client, setClient] = useState({});
-  const [buscar, setBuscar] = useState("");
+  const [products, setProducts] = useState([]);
+  // const [buscar, setBuscar] = useState("");
   const [pedidos, setPedidos] = useState([]);
   const [total, setTotal] = useState(0);
+
+  console.log("peddi", pedidos);
 
   const navigate = useNavigate();
 
@@ -20,34 +23,54 @@ export const NewPedido = () => {
     const client = await axios.get(`${URL}/clientes/${id}`);
     setClient(client.data);
   };
+  const getProductos = async () => {
+    const response = await axios.get(`${URL}/products`);
+    setProducts(response.data);
+  };
 
   useEffect(() => {
     getCliente();
+    getProductos();
     sumaTotal();
   }, [pedidos]);
 
-  const buscaProducto = async (e) => {
+  const handleSelect = async(e) => {
     e.preventDefault();
-    const response = await axios.get(`${URL}/search?name=${buscar}`);
 
-    if (response.data[0]) {
-      const pedido = {
-        ...response.data[0],
-        producto: response.data[0]._id,
-        priceintro: 0,
-        subtotal: 0,
-        cantidad: 0,
-      };
+    const response = await axios.get(`${URL}/products/${e.target.value}`);
+    const newpedido = {
+      ...response.data,
+      producto: e.target.value,
+      cantidad: 0,
+      priceintro: 0,
+      subtotal: 0,
+    };
 
-      setPedidos([...pedidos, pedido]);
-    } else {
-      Swal.fire("No se encontraron resultados", "Vuelva a Intentarlo", "error");
-    }
+    setPedidos([...pedidos, newpedido]);
   };
 
-  const leerBus = (e) => {
-    setBuscar(e.target.value);
-  };
+  // const buscaProducto = async (e) => {
+  //   e.preventDefault();
+  //   const response = await axios.get(`${URL}/search?name=${buscar}`);
+
+  //   if (response.data[0]) {
+  //     const pedido = {
+  //       ...response.data[0],
+  //       producto: response.data[0]._id,
+  //       priceintro: 0,
+  //       subtotal: 0,
+  //       cantidad: 0,
+  //     };
+
+  //     setPedidos([...pedidos, pedido]);
+  //   } else {
+  //     Swal.fire("No se encontraron resultados", "Vuelva a Intentarlo", "error");
+  //   }
+  // };
+
+  // const leerBus = (e) => {
+  //   setBuscar(e.target.value);
+  // };
 
   const sumaTotal = () => {
     if (pedidos.length === 0) {
@@ -64,28 +87,25 @@ export const NewPedido = () => {
     setPedidos(response);
   };
 
-  const handleSubmit = async(e)=> {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newPedido = {
-      "cliente": id,
-      "pedido": pedidos,
-      "total": total
-    }
-
-    console.log(newPedido)
+      cliente: id,
+      pedido: pedidos,
+      total: total,
+    };
 
     try {
-      await axios.post(`${URL}/pedidos`, newPedido)
+      await axios.post(`${URL}/pedidos`, newPedido);
       Swal.fire("OK", "El pedido se agregó correctamente", "success");
-        navigate("/pedidos")
+      navigate("/pedidos");
     } catch (error) {
-        console.log(error)
+      console.log(error);
       Swal.fire("Hubo un error", "Vuelva a Intentarlo", "error");
-        navigate("/pedidos")
+      navigate("/pedidos");
     }
-
-  }
+  };
 
   return (
     <>
@@ -98,18 +118,39 @@ export const NewPedido = () => {
         </p>
       </div>
 
-      <SearchProduct buscaProducto={buscaProducto} leerBus={leerBus} />
+      {/* <SearchProduct buscaProducto={buscaProducto} leerBus={leerBus} /> */}
+      <legend className="legend">
+        Busca un Producto y agrega una cantidad
+      </legend>
+
+      <div className="campo">
+        <label className="label">Productos:</label>
+        <select className="selectp" onChange={handleSelect}>
+          <option value={"DEFAULT"} disabled>
+            --Seleccione Producto--
+          </option>
+          {products.length !== 0
+            ? products.map((product) => (
+                <option key={product._id} value={product._id}>
+                  {product.name}
+                </option>
+              ))
+            : null}
+        </select>
+      </div>
 
       <ul className="resumen">
-        {pedidos.map((product) => (
-          <CountProduct
-            key={product._id}
-            product={product}
-            pedidos={pedidos}
-            setPedidos={setPedidos}
-            quitarProducto={quitarProducto}
-          />
-        ))}
+        {pedidos.length !== 0
+          ? pedidos.map((product) => (
+              <CountProduct
+                key={product._id}
+                product={product}
+                pedidos={pedidos}
+                setPedidos={setPedidos}
+                quitarProducto={quitarProducto}
+              />
+            ))
+          : null}
       </ul>
       <p className="total">
         Total a Pagar: <span>$ {total}</span>

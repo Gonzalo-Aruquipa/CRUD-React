@@ -5,7 +5,6 @@ import { PedidoCard } from "./PedidoCard";
 export const Pedido = () => {
 
   const [pedidos, setPedidos] = useState([]);
-  console.log(pedidos)
 
   const URL = "http://localhost:3000";
 

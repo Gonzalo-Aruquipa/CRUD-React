@@ -46,7 +46,7 @@ export const CountProduct = (props) => {
       <li>
         <div className="texto-producto">
           <p className="nombre">{product.name}</p>
-          <p className="precio"> $ {product.price}</p>
+          {/* <p className="precio"> $ {product.price}</p> */}
         </div>
         <div className="acciones">
           <div className="contenedor-cantidad-in">
