@@ -27,7 +27,7 @@ export const Pedido = () => {
       <ul className="listado-pedidos">
         {
           pedidos.map(pedido => (
-            <PedidoCard  key={pedido._id} _id={pedido._id} total={pedido.total} clientes={pedido.cliente} productos={pedido.pedido}/>
+            <PedidoCard  key={pedido._id} _id={pedido._id} total={pedido.total} cliente={pedido.cliente} productos={pedido.pedido}/>
 
           ))
         }

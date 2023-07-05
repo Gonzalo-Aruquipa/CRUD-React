@@ -55,6 +55,7 @@ export const CountProduct = (props) => {
               type="number"
               name="priceintro"
               placeholder="precio"
+              min={0}
               onChange={(e) => updatePrice(product._id, e.target.value)}
             />
             <input
@@ -62,6 +63,7 @@ export const CountProduct = (props) => {
               type="number"
               name="cantidad"
               placeholder="cantidad"
+              min={0}
               onChange={(e) => updateCantidad(product._id, e.target.value)}
             />
             <input

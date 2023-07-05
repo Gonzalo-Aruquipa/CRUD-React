@@ -13,10 +13,7 @@ export const NewPedido = () => {
   const [pedidos, setPedidos] = useState([]);
   const [total, setTotal] = useState(0);
 
-  console.log("peddi", pedidos);
-
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   const getCliente = async () => {
@@ -34,19 +31,27 @@ export const NewPedido = () => {
     sumaTotal();
   }, [pedidos]);
 
-  const handleSelect = async(e) => {
+  const handleSelect = async (e) => {
     e.preventDefault();
 
-    const response = await axios.get(`${URL}/products/${e.target.value}`);
-    const newpedido = {
-      ...response.data,
-      producto: e.target.value,
-      cantidad: 0,
-      priceintro: 0,
-      subtotal: 0,
-    };
+    const verifica = pedidos.filter(
+      (product) => product.producto === e.target.value
+    );
 
-    setPedidos([...pedidos, newpedido]);
+    if (verifica.length === 0) {
+      const response = await axios.get(`${URL}/products/${e.target.value}`);
+      const newpedido = {
+        ...response.data,
+        producto: e.target.value,
+        cantidad: 0,
+        priceintro: 0,
+        subtotal: 0,
+      };
+
+      setPedidos([...pedidos, newpedido]);
+    } else {
+      return pedidos;
+    }
   };
 
   // const buscaProducto = async (e) => {
@@ -125,7 +130,11 @@ export const NewPedido = () => {
 
       <div className="campo">
         <label className="label">Productos:</label>
-        <select className="selectp" onChange={handleSelect}>
+        <select
+          className="selectp"
+          onChange={handleSelect}
+          defaultValue={"DEFAULT"}
+        >
           <option value={"DEFAULT"} disabled>
             --Seleccione Producto--
           </option>

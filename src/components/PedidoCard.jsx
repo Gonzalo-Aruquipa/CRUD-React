@@ -1,13 +1,13 @@
 export const PedidoCard = (pedido) => {
 
-  const {_id, total, clientes, productos}= pedido;
+  const {_id, total, cliente, productos}= pedido;
 
   return (
     <>
       <li className="pedido">
         <div className="info-pedido">
           <p className="id">ID: {_id}</p>
-          <p className="nombre">Cliente: {clientes.name} {clientes.lastname}</p>
+          <p className="nombre">Cliente: {cliente.name} {cliente.lastname}</p>
 
           <div className="articulos-pedido">
             <p className="productos">Artículos Pedido: </p>
@@ -16,8 +16,8 @@ export const PedidoCard = (pedido) => {
               {productos.map(producto=> (
 
               <li key={producto._id}>
-                <p>{producto.name}</p>
-                <p>Precio: $ {producto.producto.price}</p>
+                <p>{producto.producto.name}</p>
+                <p>Precio: $ {producto.priceintro}</p>
                 <p>Cantidad: {producto.cantidad}</p>
               </li>
 
