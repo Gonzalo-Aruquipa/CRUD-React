@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // import { SearchProduct } from "./SearchProduct";
 import { CountProduct } from "./CountProduct";
 import Swal from "sweetalert2";
+import Select from "react-select";
 
 export const NewPedido = () => {
   const URL = "http://localhost:3000";
@@ -32,17 +33,13 @@ export const NewPedido = () => {
   }, [pedidos]);
 
   const handleSelect = async (e) => {
-    e.preventDefault();
-
-    const verifica = pedidos.filter(
-      (product) => product.producto === e.target.value
-    );
+    const verifica = pedidos.filter((product) => product.producto === e.value);
 
     if (verifica.length === 0) {
-      const response = await axios.get(`${URL}/products/${e.target.value}`);
+      const response = await axios.get(`${URL}/products/${e.value}`);
       const newpedido = {
         ...response.data,
-        producto: e.target.value,
+        producto: e.value,
         cantidad: 0,
         priceintro: 0,
         subtotal: 0,
@@ -130,22 +127,20 @@ export const NewPedido = () => {
 
       <div className="campo">
         <label className="label">Productos:</label>
-        <select
+        <Select
           className="selectp"
+          placeholder="Seleccione Producto"
           onChange={handleSelect}
           defaultValue={"DEFAULT"}
-        >
-          <option value={"DEFAULT"} disabled>
-            --Seleccione Producto--
-          </option>
-          {products.length !== 0
-            ? products.map((product) => (
-                <option key={product._id} value={product._id}>
-                  {product.name}
-                </option>
-              ))
-            : null}
-        </select>
+          options={
+            products.length !== 0
+              ? products.map((product) => ({
+                  label: product.name,
+                  value: product._id,
+                }))
+              : null
+          }
+        />
       </div>
 
       <ul className="resumen">
