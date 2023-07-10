@@ -1,4 +1,3 @@
-import {useContext} from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
@@ -12,16 +11,13 @@ import { UpdateProduct } from "./components/UpdateProduct";
 import { Pedido } from "./components/Pedido";
 import { NewPedido } from "./components/NewPedido";
 import { Login } from "./components/Login";
-import { CRMContext, CRMProvider } from "./context/CRMContext";
 
 function App() {
 
-  const [auth, setAuth] = useContext(CRMContext)
 
   return (
     <>
       <Router>
-        <CRMProvider value={[auth, setAuth]}>
         <Header />
         <div className="grid contenedor contenido-principal">
           <Navigate />
@@ -39,7 +35,6 @@ function App() {
             </Routes>
           </main>
         </div>
-        </CRMProvider>
       </Router>
     </>
   );

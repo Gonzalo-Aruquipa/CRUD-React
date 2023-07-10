@@ -1,23 +1,21 @@
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { ClienteCard } from "./ClienteCard";
 import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading";
-import { CRMContext } from "../context/CRMContext";
 export const Client = () => {
   const [clientes, setClientes] = useState([]);
 
-
-  const [auth, setAuth] = useContext(CRMContext);
-
   const navigate = useNavigate();
   const URL = "http://localhost:3000";
+
+  const token = localStorage.getItem("token");
 
   const getClientes = async () => {
     try {
       const response = await axios.get(`${URL}/clientes`, {
         headers: {
-          Authorization: `Bearer ${auth.token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setClientes(response.data);
@@ -29,14 +27,14 @@ export const Client = () => {
   };
 
   useEffect(() => {
-    if (auth.token !== 0) {
+    if (token !== "") {
       getClientes();
     } else {
-      navigate("login");
+      navigate("/login");
     }
   }, []);
 
-  if (!auth.auth) {
+  if (!token) {
     navigate("/login");
   }
 
