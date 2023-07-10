@@ -1,24 +1,46 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ClienteCard } from "./ClienteCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading";
+import { CRMContext } from "../context/CRMContext";
 export const Client = () => {
   const [clientes, setClientes] = useState([]);
 
+
+  const [auth, setAuth] = useContext(CRMContext);
+
+  const navigate = useNavigate();
   const URL = "http://localhost:3000";
 
   const getClientes = async () => {
-    const response = await axios.get(`${URL}/clientes`);
-    setClientes(response.data);
+    try {
+      const response = await axios.get(`${URL}/clientes`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      setClientes(response.data);
+    } catch (error) {
+      if (error.response.status == 500) {
+        navigate("/login");
+      }
+    }
   };
 
   useEffect(() => {
-    getClientes();
+    if (auth.token !== 0) {
+      getClientes();
+    } else {
+      navigate("login");
+    }
   }, []);
 
-  if(!clientes.length) return <Loading/>
+  if (!auth.auth) {
+    navigate("/login");
+  }
 
+  if (!clientes.length) return <Loading />;
 
   return (
     <>
@@ -32,7 +54,15 @@ export const Client = () => {
 
       <ul className="listado-clientes">
         {clientes.map((cliente) => (
-          <ClienteCard key={cliente._id} id={cliente._id} name={cliente.name} lastname={cliente.lastname} telefono={cliente.telefono} empresa={cliente.empresa} email={cliente.email}/>
+          <ClienteCard
+            key={cliente._id}
+            id={cliente._id}
+            name={cliente.name}
+            lastname={cliente.lastname}
+            telefono={cliente.telefono}
+            empresa={cliente.empresa}
+            email={cliente.email}
+          />
         ))}
       </ul>
     </>

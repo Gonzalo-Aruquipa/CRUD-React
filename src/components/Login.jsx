@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { CRMContext } from "../context/CRMContext";
 
 export const Login = () => {
   const URL = "http://localhost:3000";
@@ -10,6 +11,8 @@ export const Login = () => {
     email: "",
     password: "",
   });
+
+  const [auth, setAuth] = useContext(CRMContext);
 
   const navigate = useNavigate();
 
@@ -20,6 +23,10 @@ export const Login = () => {
       const response = await axios.post(`${URL}/login`, input);
       const  token  = response.data;
       localStorage.setItem("token", token);
+      setAuth({
+        token,
+        auth: true
+      })
       Swal.fire("OK", "Bienvenido", "success");
       navigate("/clientes")
     } catch (error) {
