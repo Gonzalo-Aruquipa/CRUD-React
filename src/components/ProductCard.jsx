@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const ProductCard = (product) => {
-  const { id, image, name, price } = product;
+  const { id, image, name} = product;
 
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
 
   const handleDelete = async (id) => {
     Swal.fire({
@@ -19,7 +20,11 @@ export const ProductCard = (product) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${URL}/products/${id}`);
+        axios.delete(`${URL}/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         Swal.fire("Eliminado!", "El Producto ha sido eliminado.", "success");
       }
     });
@@ -31,7 +36,6 @@ export const ProductCard = (product) => {
         <li className="producto">
           <div className="info-producto">
             <p className="nombre">{name}</p>
-            <p className="precio">$ {price}</p>
             {image ? <img src={`http://localhost:3000/${image}`} /> : null}
           </div>
           <div className="acciones">

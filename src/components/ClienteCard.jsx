@@ -6,6 +6,7 @@ export const ClienteCard = (cliente) => {
   const { id, name, lastname, telefono, email, empresa } = cliente;
 
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
 
   const handleDelete = async (id) => {
     Swal.fire({
@@ -16,10 +17,14 @@ export const ClienteCard = (cliente) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar!",
-      cancelButtonText: "Cancelar"
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${URL}/clientes/${id}`);
+        axios.delete(`${URL}/clientes/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         Swal.fire("Eliminado!", "El Cliente ha sido eliminado.", "success");
       }
     });

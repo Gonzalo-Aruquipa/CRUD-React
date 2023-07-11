@@ -5,10 +5,10 @@ import Swal from "sweetalert2";
 
 export const UpdateProduct = () => {
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
 
   const [product, setProduct] = useState({
     name: "",
-    price: "",
     image: "",
   });
   const navigate = useNavigate();
@@ -16,7 +16,11 @@ export const UpdateProduct = () => {
   const { id } = useParams();
 
   const getProduct = async () => {
-    const product = await axios.get(`${URL}/products/${id}`);
+    const product = await axios.get(`${URL}/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setProduct(product.data);
   };
 
@@ -39,10 +43,13 @@ export const UpdateProduct = () => {
   const updateProduct = async () => {
     const formData = new FormData();
     formData.append("name", product.name);
-    formData.append("price", product.price);
     formData.append("image", archivo);
     try {
-      await axios.put(`${URL}/products/${id}`, formData);
+      await axios.put(`${URL}/products/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       Swal.fire("OK", "Cambios guardados correctamente", "success");
       navigate("/productos");
     } catch (error) {
@@ -67,9 +74,6 @@ export const UpdateProduct = () => {
     if (!product.name) {
       error.name = "El Nombre no puede ir vacío";
     }
-    if (!product.price) {
-      error.price = "El precio no puede ir vacío";
-    }
     return error;
   }
   return (
@@ -92,20 +96,6 @@ export const UpdateProduct = () => {
         </div>
 
         <div className="campo">
-          <label>Precio:</label>
-          <input
-            type="number"
-            name="price"
-            min="0.00"
-            step="1"
-            placeholder="Precio"
-            defaultValue={product.price}
-            onChange={handleChange}
-          />
-          {error.price && <p className="danger-p">{error.price}</p>}
-        </div>
-
-        <div className="campo">
           <label>Imagen:</label>
           {product.image ? (
             <img src={`http://localhost:3000/${product.image}`} width={"300"} />
@@ -118,7 +108,7 @@ export const UpdateProduct = () => {
             type="submit"
             className="btn btn-azul"
             value="Guardar Cambios"
-            disabled={error.name || error.price ? true : false}
+            disabled={error.name  ? true : false}
           />
         </div>
       </form>

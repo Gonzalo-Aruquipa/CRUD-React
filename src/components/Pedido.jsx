@@ -7,10 +7,15 @@ export const Pedido = () => {
   const [pedidos, setPedidos] = useState([]);
 
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
 
 
   const getPedidos = async ()=>{
-    const response = await axios.get(`${URL}/pedidos`);
+    const response = await axios.get(`${URL}/pedidos`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setPedidos(response.data)
   }
 

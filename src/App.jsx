@@ -21,6 +21,7 @@ function App() {
           <Navigate />
           <main className="caja-contenido col-9">
             <Routes>
+              <Route exact path="/" element={<Client />} />
               <Route exact path="/clientes" element={<Client />} />
               <Route exact path="/create-client" element={<NewClient />} />
               <Route

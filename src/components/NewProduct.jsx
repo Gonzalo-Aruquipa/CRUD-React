@@ -5,11 +5,11 @@ import Swal from "sweetalert2";
 
 export const NewProduct = () => {
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [product, setProduct] = useState(
     {
         name: "",
-        price: "",
       }
   );
 
@@ -28,10 +28,13 @@ export const NewProduct = () => {
 
     const formData = new FormData();
     formData.append("name", product.name)
-    formData.append("price", product.price)
     formData.append("image", archivo);
     try {
-      await axios.post(`${URL}/products`, formData);
+      await axios.post(`${URL}/products`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       Swal.fire("OK", "El producto se agregó correctamente", "success");
         navigate("/productos")
     } catch (error) {
@@ -56,9 +59,7 @@ export const NewProduct = () => {
     if (!product.name) {
       error.name = "El Nombre no puede ir vacío";
     } 
-    if (!product.price) {
-      error.price = "El precio no puede ir vacío";
-    } 
+     
     return error;
   }
 
@@ -81,19 +82,6 @@ export const NewProduct = () => {
         </div>
 
         <div className="campo">
-          <label>Precio:</label>
-          <input
-            type="number"
-            name="price"
-            min="0.00"
-            step="1"
-            placeholder="Precio"
-            onChange={handleChange}
-          />
-          {error.price && <p className="danger-p">{error.price}</p>}
-        </div>
-
-        <div className="campo">
           <label>Imagen:</label>
           <input 
           type="file" 
@@ -107,7 +95,7 @@ export const NewProduct = () => {
             type="submit"
             className="btn btn-azul"
             value="Agregar Producto"
-            disabled={error.name || error.price 
+            disabled={error.name 
               ? true
               : false}
           />

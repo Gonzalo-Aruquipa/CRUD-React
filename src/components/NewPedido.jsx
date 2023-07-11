@@ -8,6 +8,7 @@ import Select from "react-select";
 
 export const NewPedido = () => {
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
   const [client, setClient] = useState({});
   const [products, setProducts] = useState([]);
   // const [buscar, setBuscar] = useState("");
@@ -18,11 +19,19 @@ export const NewPedido = () => {
   const { id } = useParams();
 
   const getCliente = async () => {
-    const client = await axios.get(`${URL}/clientes/${id}`);
+    const client = await axios.get(`${URL}/clientes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setClient(client.data);
   };
   const getProductos = async () => {
-    const response = await axios.get(`${URL}/products`);
+    const response = await axios.get(`${URL}/products`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setProducts(response.data);
   };
 
@@ -36,7 +45,11 @@ export const NewPedido = () => {
     const verifica = pedidos.filter((product) => product.producto === e.value);
 
     if (verifica.length === 0) {
-      const response = await axios.get(`${URL}/products/${e.value}`);
+      const response = await axios.get(`${URL}/products/${e.value}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const newpedido = {
         ...response.data,
         producto: e.value,
@@ -99,7 +112,11 @@ export const NewPedido = () => {
     };
 
     try {
-      await axios.post(`${URL}/pedidos`, newPedido);
+      await axios.post(`${URL}/pedidos`, newPedido, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       Swal.fire("OK", "El pedido se agregó correctamente", "success");
       navigate("/pedidos");
     } catch (error) {

@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 export const NewClient = () => {
   const URL = "http://localhost:3000";
+  const token = localStorage.getItem("token");
 
   const [cliente, setCliente] = useState({
     name: "",
@@ -21,7 +22,11 @@ export const NewClient = () => {
   };
   const postClientes = async () => {
     try {
-      await axios.post(`${URL}/clientes`, cliente);
+      await axios.post(`${URL}/clientes`, cliente, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       Swal.fire("OK", "El cliente se agregó correctamente", "success");
       navigate("/clientes");
     } catch (error) {
