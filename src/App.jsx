@@ -13,8 +13,6 @@ import { NewPedido } from "./components/NewPedido";
 import { Login } from "./components/Login";
 
 function App() {
-
-
   return (
     <>
       <Router>
@@ -25,10 +23,18 @@ function App() {
             <Routes>
               <Route exact path="/clientes" element={<Client />} />
               <Route exact path="/create-client" element={<NewClient />} />
-              <Route exact path="/update-client/:id" element={<UpdateClient />} />
+              <Route
+                exact
+                path="/update-client/:id"
+                element={<UpdateClient />}
+              />
               <Route exact path="/productos" element={<Product />} />
               <Route exact path="/create-product" element={<NewProduct />} />
-              <Route exact path="/update-product/:id" element={<UpdateProduct />} />
+              <Route
+                exact
+                path="/update-product/:id"
+                element={<UpdateProduct />}
+              />
               <Route exact path="/pedidos" element={<Pedido />} />
               <Route exact path="/create-pedido/:id" element={<NewPedido />} />
               <Route exact path="/login" element={<Login />} />
