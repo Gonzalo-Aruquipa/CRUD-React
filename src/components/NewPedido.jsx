@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import Select from "react-select";
 
 export const NewPedido = () => {
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
   const token = localStorage.getItem("token");
   const [client, setClient] = useState({});
   const [products, setProducts] = useState([]);

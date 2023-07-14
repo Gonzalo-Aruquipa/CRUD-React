@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 export const ProductCard = (product) => {
   const { id, image, name} = product;
 
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
   const token = localStorage.getItem("token");
 
   const handleDelete = async (id) => {
@@ -36,7 +36,7 @@ export const ProductCard = (product) => {
         <li className="producto">
           <div className="info-producto">
             <p className="nombre">{name}</p>
-            {image ? <img src={`http://localhost:3000/${image}`} /> : null}
+            {image ? <img src={`${URL}/${image}`} /> : null}
           </div>
           <div className="acciones">
             <Link to={`/update-product/${id}`} className="btn btn-azul">

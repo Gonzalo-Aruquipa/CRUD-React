@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const UpdateProduct = () => {
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
   const token = localStorage.getItem("token");
 
   const [product, setProduct] = useState({
@@ -98,7 +98,7 @@ export const UpdateProduct = () => {
         <div className="campo">
           <label>Imagen:</label>
           {product.image ? (
-            <img src={`http://localhost:3000/${product.image}`} width={"300"} />
+            <img src={`${URL}/${product.image}`} width={"300"} />
           ) : null}
           <input type="file" name="image" onChange={handleImage} />
         </div>

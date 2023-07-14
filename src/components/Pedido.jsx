@@ -6,7 +6,7 @@ export const Pedido = () => {
 
   const [pedidos, setPedidos] = useState([]);
 
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
   const token = localStorage.getItem("token");
 
 

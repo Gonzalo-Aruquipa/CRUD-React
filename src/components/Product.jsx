@@ -2,14 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ProductCard } from "./ProductCard";
-import { Loading } from "./Loading";
+// import { Loading } from "./Loading";
 
 export const Product = () => {
   const [products, setProducts] = useState([]);
 
   const navigate = useNavigate();
 
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
   const token = localStorage.getItem("token");
 
   const getProducts = async () => {
@@ -41,7 +41,7 @@ export const Product = () => {
     navigate("/login");
   }
 
-  if (!products.length) return <Loading />;
+  // if (!products.length) return <Loading />;
   return (
     <>
       <h2>Productos</h2>

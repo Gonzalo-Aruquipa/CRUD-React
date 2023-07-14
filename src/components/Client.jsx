@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 import { ClienteCard } from "./ClienteCard";
 import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "./Loading";
+
 export const Client = () => {
   const [clientes, setClientes] = useState([]);
 
   const navigate = useNavigate();
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
 
   const token = localStorage.getItem("token");
 

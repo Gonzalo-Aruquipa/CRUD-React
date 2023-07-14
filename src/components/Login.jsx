@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const Login = () => {
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
 
   const [input, setInputs] = useState({
     email: "",
@@ -25,7 +25,13 @@ export const Login = () => {
       navigate("/clientes")
     } catch (error) {
       console.log(error);
-      Swal.fire("Hubo un error", error.response.data, "error");
+      if(error.response){
+        Swal.fire("Hubo un error", error.response.data, "error");
+      }else{
+        Swal.fire("Hubo un error", "Hubo un error", "error");
+      }
+
+
     }
   };
 

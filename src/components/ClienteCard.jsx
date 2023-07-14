@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 export const ClienteCard = (cliente) => {
   const { id, name, lastname, telefono, email, empresa } = cliente;
 
-  const URL = "http://localhost:3000";
+  const URL = import.meta.env.VITE_APP_BACKEND_URL;
   const token = localStorage.getItem("token");
 
   const handleDelete = async (id) => {
