@@ -22,7 +22,7 @@ function App() {
           <main className="caja-contenido col-9">
             <Routes>
               <Route exact path="/" element={<Client />} />
-              <Route  path="/clientes" element={<Client />} />
+              <Route exact path="/clientes" element={<Client />} />
               <Route exact path="/create-client" element={<NewClient />} />
               <Route
                 exact
