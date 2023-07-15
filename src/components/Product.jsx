@@ -28,13 +28,11 @@ export const Product = () => {
   };
 
   useEffect(() => {
-    return () => {
       if (token !== "") {
         getProducts();
       } else {
         navigate("/login");
       }
-    };
   }, []);
 
   if (!token) {

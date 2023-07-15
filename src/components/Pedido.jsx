@@ -20,9 +20,7 @@ export const Pedido = () => {
   }
 
   useEffect(() => {
-    return () => {
       getPedidos();
-    };
   }, [])
   return (
     <>
