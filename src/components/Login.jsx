@@ -52,6 +52,7 @@ export const Login = () => {
                 name="email"
                 placeholder="Email"
                 required
+                value={"prueba@gmail.com"}
                 onChange={handleChange}
               />
             </div>
@@ -62,6 +63,7 @@ export const Login = () => {
                 name="password"
                 placeholder="Password"
                 required
+                value={"123456"}
                 onChange={handleChange}
               />
             </div>
